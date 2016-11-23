@@ -1,0 +1,23 @@
+Collapse or expand internal nodes
+- Done
+
+Display internal node names in a popover
+   Method 1: Mouse over
+      - Identify node
+      - If it has no children, do nothing
+      - if it has children, display name in tooltip
+
+
+Select all/none of the leaf nodes of a given internal node
+
+
+Highlight specific subtrees with a background color, e.g.,
+
+Monocots (yellow) {id:71240, color: “yellow”}
+  Rice (green)
+  Dicots (orange)
+  Mark well annotated model organisms with bold text (e.g., Arabidopsis thaliana)
+
+
+
+Search by name (or partial name)
