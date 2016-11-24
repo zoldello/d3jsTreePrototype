@@ -1,3 +1,5 @@
+// references: http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+
 var treeData = [
   {
     "name": "Top Level",
@@ -67,14 +69,43 @@ function update(source) {
   var node = svg.selectAll("g.node")
 	  .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
+
+    // Define the div for the tooltip
+    var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("g")
-	  .attr("class", "node")
+	  .attr("class", "node tooltip")
 	  .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
 	  .on("click", click)
-    .on("mouseover", mouseOver)
+    .on("mouseover", function(d) {
+      var currentNode = d;
+      var display = [];
+      var toShow = '';
 
-    ;
+      while ( !!currentNode && currentNode !== 'null') {
+          display.push( currentNode.name );
+          currentNode = currentNode.parent;
+      }
+
+toShow = display.reverse().join(' -> ') ;
+
+div.transition()
+     .duration(200)
+     .style("opacity", .9);
+ div .html(toShow + "<br/>"  )
+     .style("left", (d3.event.pageX) + "px")
+     .style("top", (d3.event.pageY - 28) + "px");
+              })
+          .on("mouseout", function(d) {
+            div.transition()
+               .duration(500)
+               .style("opacity", 0);
+          });
+
 
   nodeEnter.append("circle")
 	  .attr("r", 1e-6)
@@ -142,20 +173,6 @@ function update(source) {
 	d.x0 = d.x;
 	d.y0 = d.y;
   });
-}
-
-function mouseOver (d) {
-  var currentNode = d;
-  var display = [];
-
-  while ( !!currentNode && currentNode !== 'null') {
-      display.push( currentNode.name );
-      currentNode = currentNode.parent;
-  }
-
-alert(display.reverse().join(' -> '));
-
-  //alert(d.parent);
 }
 
 // Toggle children on click.
