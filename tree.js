@@ -145,7 +145,17 @@ function update(source) {
 }
 
 function mouseOver (d) {
-  alert(d.parent);
+  var currentNode = d;
+  var display = [];
+
+  while ( !!currentNode && currentNode !== 'null') {
+      display.push( currentNode.name );
+      currentNode = currentNode.parent;
+  }
+
+alert(display.reverse().join(' -> '));
+
+  //alert(d.parent);
 }
 
 // Toggle children on click.
