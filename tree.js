@@ -8,35 +8,53 @@ flatten a nested array: http://stackoverflow.com/a/35273005/178550
 
 var treeData = [{
   "name": "Top Level",
+  "id": "1",
+  "isSelected": "false",
   "parent": "null",
   "children": [{
     "name": "Level 2: A",
+    "id": "2",
+      "isSelected": "false",
     "backgroundColor": "green",
     "parent": "Top Level",
     "children": [{
       "name": "Son of A",
+      "id": "3",
+        "isSelected": "false",
       "parent": "Level 2: A",
       "children": [{
         "name": "Level 2: A",
+          "id": "4",
+            "isSelected": "false",
         "parent": "Top Level",
         "children": [{
           "name": "Son of A",
+          "id": "5",
+            "isSelected": "false",
           "parent": "Level 2: A"
         }, {
           "name": "Daughter of A",
+          "id": "6",
+            "isSelected": "false",
           "isWellAnnoted": "true",
           "parent": "Level 2: A"
         }]
       }, {
         "name": "Level 2: B",
+        "id": "7",
+          "isSelected": "false",
         "parent": "Top Level"
       }]
     }, {
       "name": "Daughter of A",
+      "id": "8",
+        "isSelected": "false",
       "parent": "Level 2: A"
     }]
   }, {
     "name": "Level 2: B",
+"id": "9",
+  "isSelected": "false",
     "parent": "Top Level"
   }]
 }];
@@ -45,8 +63,36 @@ var treeData = [{
 
 
 //************  Search ******************
+function isParent(d) {
+  return !!d.children || !!d._children;
+}
+
+
+function flatWithFunc(array, condition) {
+    var result = [];
+
+    array.forEach(function (a) {
+var children = a.children || a._children
+
+      if ( !condition(a) ) {
+        result.push(a);
+      }
+
+
+        if (Array.isArray(children) ) {
+            result = result.concat(flat(children));
+        }
+    });
+    return result;
+}
+
+
 function flat(array) {
     var result = [];
+
+if (!array || !!array.length) {
+  return [];
+}
     array.forEach(function (a) {
         result.push(a);
         if (Array.isArray(a.children)) {
@@ -77,15 +123,6 @@ alert(searchResult);
 });
 
 /////******************** searchText = ***var ****************.rim()*
-
-
-
-
-
-
-
-
-
 
 
 // ************** Generate the tree diagram	 *****************
@@ -159,6 +196,59 @@ function update(source) {
   })
   .on("click", click)
   ///////////////////////////////////////////////////////////////////////////////////
+
+.on('dblclick', function (d) {
+  var children;
+
+if (!isParent(d)) {
+  return;
+}
+
+
+children = flatWithFunc(d.children || d._children,  isParent) ;
+
+
+ var node = svg.selectAll("g.node")
+ .data(nodes, function(d) {
+   var i = 0;
+
+   //return d.id || (d.id = ++i);
+ });
+
+
+
+  var nodeEnter = node.enter().append("g")
+  .classed('selected-node', function(d) {
+    var i = 0
+
+  });
+
+
+
+
+
+//svg.selectAll("g.node").classed('selected-node', false);
+
+svg.selectAll("g.node").classed('selected-node', function(d, i) {
+  if ( _.pluck(children, "id").indexOf(d.id)  < 0 ) {
+    return false;
+  }
+
+    if ( d.isSelected === "false" ) {
+      d.isSelected = "true";
+      return true;
+  }  else {
+    d.isSelected = "false";
+    return false;
+  } ;
+})
+
+
+  //alert('double click');
+
+})
+
+
   .on("mouseover", function(d) {
 
     if (!d.children) {
@@ -285,6 +375,12 @@ function click(d) {
   } else {
     d.children = d._children;
     d._children = null;
+
+// recolor area
+if (d.isSelected === "true") {
+
+}
+
   }
   update(d);
 }

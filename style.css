@@ -8,6 +8,10 @@
   stroke-width: 3px;
 }
 
+.selected-node circle {
+  fill: red !important;
+}
+
 .node text {
   font: 12px sans-serif;
 }
