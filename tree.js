@@ -229,19 +229,7 @@ children = flatWithFunc(d.children || d._children,  isParent) ;
 
 //svg.selectAll("g.node").classed('selected-node', false);
 
-svg.selectAll("g.node").classed('selected-node', function(d, i) {
-  if ( _.pluck(children, "id").indexOf(d.id)  < 0 ) {
-    return false;
-  }
-
-    if ( d.isSelected === "false" ) {
-      d.isSelected = "true";
-      return true;
-  }  else {
-    d.isSelected = "false";
-    return false;
-  } ;
-})
+selectNode(children);
 
 
   //alert('double click');
@@ -367,6 +355,9 @@ svg.selectAll("g.node").classed('selected-node', function(d, i) {
     d.y0 = d.y;
   });
 }
+
+
+
 // Toggle children on click.
 function click(d) {
   if (d.children) {
@@ -377,10 +368,40 @@ function click(d) {
     d._children = null;
 
 // recolor area
-if (d.isSelected === "true") {
+//selectNode(d.children);
 
-}
 
   }
   update(d);
+
+
+if ( !isParent(d) ) {
+  var theArrayThing = [];
+
+  theArrayThing.push(d)
+selectNode(  theArrayThing  );
 }
+
+
+}
+
+
+/////////////////////////
+function selectNode(children) {
+
+
+svg.selectAll("g.node").classed('selected-node', function(d, i) {
+ if ( _.pluck(children, "id").indexOf(d.id)  < 0 ) {
+    return false;
+  }
+
+    if ( d.isSelected === "false" ) {
+      d.isSelected = "true";
+      return true;
+  }  else {
+    d.isSelected = "false";
+    return false;
+  } ;
+})
+}
+///////////////////////////
