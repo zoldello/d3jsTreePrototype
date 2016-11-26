@@ -1,0 +1,27 @@
+{
+  "name": "d3jstree",
+  "version": "1.0.0",
+  "description": "This is a prototype of an simple application, that centers on data  virtualization.",
+  "main": "d3.v3.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zoldello/d3jsTreePrototype.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zoldello/d3jsTreePrototype/issues"
+  },
+  "homepage": "https://github.com/zoldello/d3jsTreePrototype#readme",
+  "devDependencies": {
+    "gramene-trees-client": "^2.4.7"
+  },
+  "dependencies": {
+    "asyncawait": "^1.0.6",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0"
+  }
+}
